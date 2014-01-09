@@ -1,6 +1,5 @@
-
-#ifndef LIB_BMP32_HPP
-#define LIB_BMP32_HPP
+#ifndef LIB_BMP24_HPP
+#define LIB_BMP24_HPP
 
 #define LIBBMP_VERSION      1001
 #define LIBBMP_SIGNATURE    19778
@@ -11,10 +10,6 @@
 
 
 namespace libbmp24 {
-
-
-//------------------------------------------------------------------------------------------
-//  ƒrƒbƒgƒ}ƒbƒvƒtƒ@ƒCƒ‹ƒwƒbƒ_
 
 
 class Bitmap {
@@ -51,8 +46,8 @@ public:
             const int width,
             const int height
         ){
-            int padding = (width * 3 + 3) / 4 * 4 - width * 3;    // 32bit‹«ŠEğŒ‚É‚æ‚éƒpƒfƒBƒ“ƒO
-            int img_size = (width * 3 + padding) * height;        // o—Í‚³‚ê‚éê‘ƒf[ƒ^ƒTƒCƒY
+            int padding = (width * 3 + 3) / 4 * 4 - width * 3;    // 32bitï¿½ï¿½ï¿½Eï¿½ï¿½ï¿½ï¿½ï¿½É‚ï¿½ï¿½ï¿½ï¿½pï¿½fï¿½Bï¿½ï¿½ï¿½O
+            int img_size = (width * 3 + padding) * height;        // ï¿½oï¿½Í‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê‘ï¿½fï¿½[ï¿½^ï¿½Tï¿½Cï¿½Y
 
             size_ = sizeof(InfoHeader);
             width_ = width;
@@ -135,7 +130,7 @@ private:
 
 public:
     //-------------------------------------------
-    //  ƒrƒbƒgƒ}ƒbƒv¶¬
+    //  ï¿½rï¿½bï¿½gï¿½}ï¿½bï¿½vï¿½ï¿½ï¿½ï¿½
     void createBitmap(
         int width,
         int height
@@ -149,22 +144,22 @@ public:
 
 
     //------------------------------------------------------------------------------------------
-    //  ƒrƒbƒgƒ}ƒbƒv‘‚«o‚µ.
+    //  ï¿½rï¿½bï¿½gï¿½}ï¿½bï¿½vï¿½ï¿½ï¿½ï¿½ï¿½oï¿½ï¿½.
     bool serialize(
         std::ofstream& file
     ) const {
         
         //  ----------------------------------
-        //  ƒwƒbƒ_o—Í
+        //  ï¿½wï¿½bï¿½_ï¿½oï¿½ï¿½
         uint16_t bm_signature = LIBBMP_SIGNATURE;
         file.write((char*)&bm_signature, 2);
         file.write((char*)&file_header_, sizeof(FileHeader));
         file.write((char*)&info_header_, sizeof(InfoHeader));
 
-        //  “à—eo—Í
+        //  ï¿½ï¿½ï¿½eï¿½oï¿½ï¿½
         file.write((char*)data_, getImageSize());
 
-        //  ¬Œ÷
+        //  ï¿½ï¿½ï¿½ï¿½
         return true;
 
     }
@@ -172,7 +167,7 @@ public:
 
     //------------------------------------------------------------------------------------------
     /**
-     *  ƒrƒbƒgƒ}ƒbƒv‚Ì®‡«ƒ`ƒFƒbƒN.
+     *  ï¿½rï¿½bï¿½gï¿½}ï¿½bï¿½vï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½ï¿½`ï¿½Fï¿½bï¿½N.
      */
     bool isVaildate() const {
         if (info_header_.size_ != sizeof(InfoHeader)) {
@@ -183,13 +178,13 @@ public:
         }
 
         int pallet_size = file_header_.offbits_ - sizeof(FileHeader) - sizeof(InfoHeader);
-        int img_size = info_header_.size_image_;     // ƒCƒ[ƒWƒTƒCƒY
-        int x = info_header_.width_;                 //  ƒCƒ[ƒW‚Ì•
-        int y = info_header_.heigth_;                // ƒCƒ[ƒW‚Ì‚‚³
-        int color_bit = info_header_.bit_count_;     // ‚PF‚ ‚½‚è‚Ìƒrƒbƒg”
+        int img_size = info_header_.size_image_;     // ï¿½Cï¿½ï¿½ï¿½[ï¿½Wï¿½Tï¿½Cï¿½Y
+        int x = info_header_.width_;                 //  ï¿½Cï¿½ï¿½ï¿½[ï¿½Wï¿½Ì•ï¿½
+        int y = info_header_.heigth_;                // ï¿½Cï¿½ï¿½ï¿½[ï¿½Wï¿½Ìï¿½ï¿½ï¿½
+        int color_bit = info_header_.bit_count_;     // ï¿½Pï¿½Fï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ìƒrï¿½bï¿½gï¿½ï¿½
 
 
-        //  ƒwƒbƒ_‚Ì–µ‚‚ğŠm”F
+        //  ï¿½wï¿½bï¿½_ï¿½Ì–ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½mï¿½F
         if (color_bit  != 24) {
             return false;
         }
@@ -215,47 +210,47 @@ public:
 
 
     //------------------------------------------------------------------------------------------
-    //  ƒrƒbƒgƒ}ƒbƒv“Ç‚İ‚İ. fstream ver.
+    //  ï¿½rï¿½bï¿½gï¿½}ï¿½bï¿½vï¿½Ç‚İï¿½ï¿½ï¿½. fstream ver.
     bool deserialize (
         std::ifstream& file
     ) {
 
-        //  ƒVƒOƒlƒ`ƒƒŠm”F
+        //  ï¿½Vï¿½Oï¿½lï¿½`ï¿½ï¿½ï¿½mï¿½F
         uint16_t signature = 0;
         file.read((char*)(&signature), 2);
 
         if (signature != LIBBMP_SIGNATURE) {
-            //  ƒrƒbƒgƒ}ƒbƒvƒtƒ@ƒCƒ‹‚Å‚Í‚È‚¢
+            //  ï¿½rï¿½bï¿½gï¿½}ï¿½bï¿½vï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½Å‚Í‚È‚ï¿½
             return false;
         }
 
-        //  ƒwƒbƒ_æ“¾
+        //  ï¿½wï¿½bï¿½_ï¿½æ“¾
         file.read((char *)(&file_header_), sizeof(FileHeader));
         if( file.bad() ) {
-            //  “Ç‚İ‚İ¸”s
+            //  ï¿½Ç‚İï¿½ï¿½İï¿½ï¿½s
             return false;
         }
 
-        //  ƒtƒ@ƒCƒ‹ƒwƒbƒ_
+        //  ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½wï¿½bï¿½_
         file.read((char *)(&info_header_), sizeof(InfoHeader));
         if (file.bad()) {
-            //  “Ç‚İ‚İ¸”s
+            //  ï¿½Ç‚İï¿½ï¿½İï¿½ï¿½s
             return false;
         }
 
 
         if (!isVaildate()) {
-            //  •s³‚Èƒf[ƒ^
+            //  ï¿½sï¿½ï¿½ï¿½Èƒfï¿½[ï¿½^
             return false;
         }
 
-        //  ƒCƒ[ƒWƒf[ƒ^æ“¾
+        //  ï¿½Cï¿½ï¿½ï¿½[ï¿½Wï¿½fï¿½[ï¿½^ï¿½æ“¾
         int img_size = getImageSize();
         delete[] data_;
         data_ = new uint8_t[img_size];
 
         if (!data_) {
-            //  “Ç‚İ‚İ¸”s
+            //  ï¿½Ç‚İï¿½ï¿½İï¿½ï¿½s
             return false;
         }
 
@@ -270,5 +265,5 @@ public:
 }   // namespace libbmp32
 
 
-#endif // LIB_BMP32_HPP
+#endif // LIB_BMP24_HPP
 
