@@ -39,7 +39,10 @@ namespace libbmp24 {
 
 class Bitmap {
 
-public:
+private:
+    //  Bitmap File Header
+    //   not use signature area.
+    //   because unuse "#pragma pack" for portable code. 
     struct FileHeader {
         uint32_t size_;
         uint16_t reserved1_;
@@ -54,6 +57,7 @@ public:
         }
     };
 
+    //  Bitmap Information Header.
     struct InfoHeader{
         uint32_t size_;
         int32_t width_;
@@ -67,12 +71,13 @@ public:
         uint32_t clr_used_;
         uint32_t clr_important_;
 
+        //  make information header.
         void setup(
             const int width,
             const int height
         ){
-            int padding = (width * 3 + 3) / 4 * 4 - width * 3;    // 32bit���E�����ɂ����p�f�B���O
-            int img_size = (width * 3 + padding) * height;        // �o�͂������ꑝ�f�[�^�T�C�Y
+            int padding = (width * 3 + 3) / 4 * 4 - width * 3;    // 32bit check
+            int img_size = (width * 3 + padding) * height;
 
             size_ = sizeof(InfoHeader);
             width_ = width;
@@ -87,6 +92,7 @@ public:
             clr_important_ = 0;
         }
 
+        //  data dunp to console.
         void dump() const {
             printf("size = %d\n", size_);
             printf("width = %d\n", width_);
@@ -102,37 +108,45 @@ public:
         }
     };
 
+public:
+    //  ctor.
     Bitmap()
         : file_header_()
         , info_header_()
         , data_(nullptr)
     {}
 
+    //  dtor.
     ~Bitmap() {
         delete[] data_;
     }
 
-
+    //  width getter.
     int32_t getWidth() const {
         return info_header_.width_;
     }
 
+    //  hight getter.
     int32_t getHeight() const {
         return info_header_.heigth_;
     }
 
+    //  image size getter. byte.
     uint32_t getImageSize() const {
         return info_header_.size_image_;
     }
 
+    //  pixel data address getter.
     const uint8_t* getData() const {
         return data_;
     }
 
+    //  dump to console.
     void dump() const {
         info_header_.dump();
     }
 
+    //  fill bitmap all pixel.
     void fill(int r, int g, int b) {
         int width = getWidth();
         int height = getHeight();
@@ -154,46 +168,43 @@ private:
     uint8_t* data_;
 
 public:
-    //-------------------------------------------
-    //  �r�b�g�}�b�v����
+    //  create new bitmap.
     void createBitmap(
         int width,
         int height
     ) {
+        //  make information header.
         info_header_.setup(width, height);
         int image_size = getImageSize();
+
+        //  make file header.
         file_header_.setup(image_size);
+
+        //  data strage.
         delete[] data_;
         data_ = new uint8_t[image_size];
     }
 
 
-    //------------------------------------------------------------------------------------------
-    //  �r�b�g�}�b�v�����o��.
+    //  serialize bitmap.
     bool serialize(
         std::ofstream& file
     ) const {
         
-        //  ----------------------------------
-        //  �w�b�_�o��
+        //  save header.
         uint16_t bm_signature = LIBBMP_SIGNATURE;
         file.write((char*)&bm_signature, 2);
         file.write((char*)&file_header_, sizeof(FileHeader));
         file.write((char*)&info_header_, sizeof(InfoHeader));
 
-        //  ���e�o��
+        //  save data.
         file.write((char*)data_, getImageSize());
 
-        //  ����
+        //  fin.
         return true;
-
     }
 
-
-    //------------------------------------------------------------------------------------------
-    /**
-     *  �r�b�g�}�b�v�̐������`�F�b�N.
-     */
+    //  validate check.
     bool isVaildate() const {
         if (info_header_.size_ != sizeof(InfoHeader)) {
             return false;
@@ -203,13 +214,12 @@ public:
         }
 
         int pallet_size = file_header_.offbits_ - sizeof(FileHeader) - sizeof(InfoHeader);
-        int img_size = info_header_.size_image_;     // �C���[�W�T�C�Y
-        int x = info_header_.width_;                 //  �C���[�W�̕�
-        int y = info_header_.heigth_;                // �C���[�W�̍���
-        int color_bit = info_header_.bit_count_;     // �P�F�������̃r�b�g��
+        int img_size = info_header_.size_image_;
+        int x = info_header_.width_;
+        int y = info_header_.heigth_;
+        int color_bit = info_header_.bit_count_;
 
-
-        //  �w�b�_�̖������m�F
+        //  support 24bit color format only.
         if (color_bit  != 24) {
             return false;
         }
@@ -233,49 +243,39 @@ public:
         return true;
     }
 
-
-    //------------------------------------------------------------------------------------------
-    //  �r�b�g�}�b�v�ǂݍ���. fstream ver.
+    //  deserialize bitmap.
     bool deserialize (
         std::ifstream& file
     ) {
 
-        //  �V�O�l�`���m�F
+        //  signature
         uint16_t signature = 0;
         file.read((char*)(&signature), 2);
 
         if (signature != LIBBMP_SIGNATURE) {
-            //  �r�b�g�}�b�v�t�@�C���ł͂Ȃ�
             return false;
         }
 
-        //  �w�b�_�擾
         file.read((char *)(&file_header_), sizeof(FileHeader));
         if( file.bad() ) {
-            //  �ǂݍ��ݎ��s
             return false;
         }
 
-        //  �t�@�C���w�b�_
         file.read((char *)(&info_header_), sizeof(InfoHeader));
         if (file.bad()) {
-            //  �ǂݍ��ݎ��s
             return false;
         }
 
 
         if (!isVaildate()) {
-            //  �s���ȃf�[�^
             return false;
         }
 
-        //  �C���[�W�f�[�^�擾
         int img_size = getImageSize();
         delete[] data_;
         data_ = new uint8_t[img_size];
 
         if (!data_) {
-            //  �ǂݍ��ݎ��s
             return false;
         }
 
