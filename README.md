@@ -1,7 +1,8 @@
 # libbmp24
 
 ##DESCRIPTION
-SIMPLE and TINY bitmap image library. This lib is only header file.
+SIMPLE and TINY bitmap image library. This lib is one header file only.
+
 But 24bit bitmap (true color) only.
 
 
@@ -13,10 +14,13 @@ Sample 01.
 Load bmp and rename save.
 
     int main() {
-        std::ifstream is("src.bmp", std::ios::in);
-        std::ofstream os("dest.bmp", std::ios::out);
         libbmp24::Bitmap bmp;
+        
+        // Load bmp.
+        std::ifstream is("src.bmp", std::ios::in);
         bmp.deserialize(is);
+        // Rename and Save.
+        std::ofstream os("dest.bmp", std::ios::out);
         bmp.serialize(os);
         return 0;
     }
@@ -24,7 +28,7 @@ Load bmp and rename save.
 
 
 Sample02.
-Dump bitmap file information.
+Dump bitmap file information to console window.
 
     int main() {
         std::ifstream is("src.bmp", std::ios::in);
@@ -33,21 +37,23 @@ Dump bitmap file information.
     }
     
 Sample03.
-Create new bitmap.
+Create new bitmap file.
 
     int main() {
-        std::ifstream os("dest.bmp", std::ios::in);
         libbmp24::Bitmap bmp;
         const int width = 64;
         const int height = 100;
-        bmp.createBitmap(width, height); // create bitmap.
+        bmp.createBitmap(width, height); // create new bitmap.
         bmp.fill(255, 0, 30); // r, g, b
+        // save.
+        std::ifstream os("dest.bmp", std::ios::in);
         bmp.deserialize(os);
     }
     
 
+
 ##LICENSE
 
 zlib license.
-
+Please read [LICENS](https://github.com/doscoy/libbmp24/blob/master/LICENSE) file.
     
