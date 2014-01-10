@@ -1,9 +1,8 @@
-original code by Tetsuro KANI
+Copyright(c) <2014> Tetsuro KANI
 
 This is zlib License.
 
 — English —-
-
 This software is provided 'as-is', without any express or implied
 warranty. In no event will the authors be held liable for any
 damages arising from the use of this software.
@@ -27,5 +26,6 @@ redistribute it freely, subject to the following restrictions:
 
 — 日本語 —
 本ソースコードはzlib Licenseに準拠します。
+著作者は利用により起こりうる損害に対する責任を負いません。
 オリジナルの著作者情報をソースコード上から削除しないことを条件に、本ソースコードを自由に改変・再配布することが可能です。
-本ソースコードを使用・改変した際にライセンスの表示義務はありません。
+本ソースコードを使用・改変・再配布した際にソースコード上に著作者情報を残しておく事以外のライセンスの表示義務はありません。
