@@ -26,7 +26,7 @@ redistribute it freely, subject to the following restrictions:
 #ifndef LIB_BMP24_HPP
 #define LIB_BMP24_HPP
 
-#define LIBBMP_VERSION      1001
+#define LIBBMP_VERSION      1002
 #define LIBBMP_SIGNATURE    19778
 
 #include <cstdlib>
@@ -152,15 +152,34 @@ public:
         int height = getHeight();
         for (int x = 0; x < width; ++x) {
             for (int y = 0; y < height; ++y) {
-                int pixel_idx = x + (y * width);
-                int data_idx = pixel_idx * 3;
-
-                data_[data_idx + 0] = static_cast<uint8_t>(b);
-                data_[data_idx + 1] = static_cast<uint8_t>(g);
-                data_[data_idx + 2] = static_cast<uint8_t>(r);
+                plot(x, y, r, g, b);
             }
         }
     }
+
+    //  plot.
+    void plot(
+        uint32_t x, 
+        uint32_t y,
+        int r,
+        int g, 
+        int b
+    ) {
+        //  check range.
+        int width = getWidth();
+        if (x > width || y > getHeight()) {
+            return;
+        }
+
+        //  plot.
+        int pixel_idx = x + (y * width);
+        int data_idx = pixel_idx * 3;
+
+        data_[data_idx + 0] = static_cast<uint8_t>(b);
+        data_[data_idx + 1] = static_cast<uint8_t>(g);
+        data_[data_idx + 2] = static_cast<uint8_t>(r);        
+    }
+
 
 private:
     FileHeader file_header_;
@@ -287,7 +306,7 @@ public:
 
 
 
-}   // namespace libbmp32
+}   // namespace libbmp24
 
 
 #endif // LIB_BMP24_HPP
