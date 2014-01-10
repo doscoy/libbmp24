@@ -54,6 +54,7 @@ Create new bitmap file.
 
 ##LICENSE
 
-zlib license.
-Please read [LICENS](https://github.com/doscoy/libbmp24/blob/master/LICENSE) file.
+libbmp24 is released under the zlib license.
+
+Please read [LICENSE](https://github.com/doscoy/libbmp24/blob/master/LICENSE) file.
     
