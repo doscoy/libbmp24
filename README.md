@@ -34,6 +34,7 @@ Dump bitmap file information to console window.
         std::ifstream is("src.bmp", std::ios::in);
         libbmp24::Bitmap bmp;
         bmp.dump();
+        return 0;
     }
     
 Sample03.
@@ -48,6 +49,7 @@ Create new bitmap file.
         // save.
         std::ifstream os("dest.bmp", std::ios::in);
         bmp.deserialize(os);
+        return 0;
     }
     
 
