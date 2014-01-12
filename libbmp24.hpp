@@ -92,20 +92,6 @@ private:
             clr_important_ = 0;
         }
 
-        //  data dunp to console.
-        void dump() const {
-            printf("size = %d\n", size_);
-            printf("width = %d\n", width_);
-            printf("heigth = %d\n", heigth_);
-            printf("planes = %d\n", planes_);
-            printf("bit_count = %d\n", bit_count_);
-            printf("compression = %d\n", compression_);
-            printf("size_image = %d\n", size_image_);
-            printf("pels_per_meter_x = %d\n", pels_per_meter_x_);
-            printf("pels_per_meter_y = %d\n", pels_per_meter_y_);
-            printf("clr_used = %d\n", clr_used_);
-            printf("clr_important = %d\n", clr_important_);
-        }
     };
 
 public:
@@ -143,7 +129,31 @@ public:
 
     //  dump to console.
     void dump() const {
-        info_header_.dump();
+    
+        printf("libbmp24::dump\n");
+        printf(" size = %d\n", info_header_.size_);
+        printf(" width = %d\n", info_header_.width_);
+        printf(" heigth = %d\n", info_header_.heigth_);
+        printf(" planes = %d\n", info_header_.planes_);
+        printf(" bit_count = %d\n", info_header_.bit_count_);
+        printf(" compression = %d\n", info_header_.compression_);
+        printf(" size_image = %d\n", info_header_.size_image_);
+        printf(" pels_per_meter_x = %d\n", info_header_.pels_per_meter_x_);
+        printf(" pels_per_meter_y = %d\n", info_header_.pels_per_meter_y_);
+        printf(" clr_used = %d\n", info_header_.clr_used_);
+        printf(" clr_important = %d\n", info_header_.clr_important_);
+        
+        if (data_) {
+            for (int x = 0; x < info_header_.width_; ++x) {
+                for (int y = 0; y < info_header_.heigth_; ++y) {
+                    int pixel_idx = x + (y * info_header_.width_);
+                    printf( " %3d %3d %3d\n", data_[pixel_idx + 0], data_[pixel_idx + 1], data_[pixel_idx + 2]);
+                }
+            }
+        }
+        else {
+            printf(" no color data.\n");
+        }
     }
 
     //  fill bitmap all pixel.
@@ -255,9 +265,9 @@ public:
             return false;
         }
 
-        if (img_size != (x * color_bit + 31) / 32 * 4 * y) {
-            return false;
-        }
+//        if (img_size != (x * color_bit + 31) / 32 * 4 * y) {
+//            return false;
+//        }
 
         return true;
     }
