@@ -40,7 +40,8 @@ This library is composed of ONE header file, so it is very portable program. Win
 <h1>
 <a name="support-format" class="anchor" href="#support-format"><span class="octicon octicon-link"></span></a>SUPPORT FORMAT</h1>
 
-<p>24bit bitmap (true color) only.</p>
+<p>24bit bitmap only.
+8bit, 16bit color pallet format is not support.</p>
 
 <h1>
 <a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>USAGE</h1>
@@ -77,6 +78,7 @@ Just include one header file only.</p>
 <pre><code>int main() {
     std::ifstream is("src.bmp", std::ios::in);
     libbmp24::Bitmap bmp;
+    bmp.deserialize(is);
     bmp.dump();
     return 0;
 }
@@ -93,10 +95,43 @@ Just include one header file only.</p>
     const int height = 100;
     bmp.createBitmap(width, height); // create new bitmap.
     bmp.fill(255, 0, 30); // r, g, b
-    // save.
-    std::ifstream os("dest.bmp", std::ios::in);
-    bmp.deserialize(os);
+    // Save.
+    std::ofstream os("dest.bmp", std::ios::out);
+    bmp.serialize(os);
     return 0;
+}
+</code></pre>
+
+<h3>
+<a name="sample04" class="anchor" href="#sample04"><span class="octicon octicon-link"></span></a>Sample04.</h3>
+
+<p>Use bmp to OpenGL texture.</p>
+
+<pre><code>// Global variable
+libbmp24::Bitmap bmp_;
+
+// Your OpenGL setup function.
+void setup_opengl() {
+    // Load texture.
+    std::ifstream is("my_texture.bmp", std::ios::in);
+    bmp_.deserialize(is);
+
+    // Setup GL Status.
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    glTexImage2D(
+        GL_TEXTURE_2D,
+        0,
+        GL_RGB,    // 24bit bitmap don't have Alpha color.
+        bmp_.getWidth(),
+        bmp_.getHeight(),
+        0,
+        GL_BGR,    // bitmap color format is BGR. Not RGB.
+        GL_UNSIGNED_BYTE,
+        bmp_.getData()
+    );
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glEnable(GL_TEXTURE_2D);
 }
 </code></pre>
 
