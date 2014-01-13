@@ -242,7 +242,6 @@ public:
             return false;
         }
 
-        int pallet_size = file_header_.offbits_ - sizeof(FileHeader) - sizeof(InfoHeader);
         int img_size = info_header_.size_image_;
         int x = info_header_.width_;
         int y = info_header_.heigth_;
@@ -264,10 +263,6 @@ public:
         if (img_size != file_header_.size_ - file_header_.offbits_) {
             return false;
         }
-
-//        if (img_size != (x * color_bit + 31) / 32 * 4 * y) {
-//            return false;
-//        }
 
         return true;
     }
