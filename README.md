@@ -59,4 +59,7 @@ Create new bitmap file.
 libbmp24 is released under the zlib license.
 
 Please read [LICENSE](https://github.com/doscoy/libbmp24/blob/master/LICENSE) file.
-    
+
+##CONTRIBUTERS
+
+* Murilo Pontes.
