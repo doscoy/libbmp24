@@ -28,6 +28,7 @@ redistribute it freely, subject to the following restrictions:
 
 #define LIBBMP_VERSION      1002
 #define LIBBMP_SIGNATURE    19778
+#define LIBBMP_SIGNATURE_SIZEOF 2
 
 #include <cstdlib>
 #include <cstdint>
@@ -53,8 +54,8 @@ private:
             size_ = image_size + sizeof(FileHeader) + sizeof(InfoHeader);
             reserved1_ = 0;
             reserved2_ = 0;
-            offbits_ = sizeof(FileHeader) + sizeof(InfoHeader);
-        }
+            offbits_ = sizeof(FileHeader) + sizeof(InfoHeader) + LIBBMP_SIGNATURE_SIZEOF; 
+         }
     };
 
     //  Bitmap Information Header.
