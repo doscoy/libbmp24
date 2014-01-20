@@ -1,9 +1,12 @@
 # libbmp24
 
-##DESCRIPTION
-SIMPLE and TINY bitmap image library. This lib is one header file only.
+#DESCRIPTION
+libbmp24 is SIMPLE and TINY bitmap image C++ library.
+This library is composed of ONE header file, so it is very portable program. Windows, Mac, UNIX, and more platform can use libbmp24.
 
-But 24bit bitmap (true color) only.
+# SUPPORT FORMAT
+24bit bitmap only.
+8bit, 16bit color pallet format is not support.
 
 
 ##SAMPLES
