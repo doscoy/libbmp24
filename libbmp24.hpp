@@ -183,7 +183,8 @@ public:
         }
 
         //  plot.
-        int pixel_idx = x + (y * width);
+        int ny = getHeight()-1-y;
+        int pixel_idx = x + (ny * width);
         int data_idx = pixel_idx * 3;
 
         data_[data_idx + 0] = static_cast<uint8_t>(b);
